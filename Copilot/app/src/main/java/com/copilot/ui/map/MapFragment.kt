@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.copilot.R
@@ -15,9 +15,11 @@ import com.google.android.gms.maps.SupportMapFragment
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
-    private var _binding: FragmentMapBinding? = null
 
+    private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
+
+    var isMapExpanded = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +36,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        setupListeners()
+
         return root
     }
 
@@ -44,5 +48,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+    }
+
+    private fun setupListeners() {
+        binding.resizeMapButton.setOnClickListener {
+            isMapExpanded = !isMapExpanded
+            binding.resizeMapButton.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    if (isMapExpanded)
+                        R.drawable.ic_baseline_close_fullscreen_24
+                    else
+                        R.drawable.ic_baseline_open_in_full_24,
+                    null
+                )
+            )
+            binding.guideline.setGuidelinePercent(if (isMapExpanded) 0.75f else 0.5f)
+        }
     }
 }
