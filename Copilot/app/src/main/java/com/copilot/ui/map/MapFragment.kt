@@ -21,8 +21,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding!!
 
     private var isMapExpanded = false
-    private val collapsedMapPercentageHeight = 0.5f
-    private val expandedMapPercentageHeight = 0.75f
+    private val collapsedMapPercentageHeight = 0.4f
+    private val expandedMapPercentageHeight = 0.6f
     private val collapseMapIcon = R.drawable.ic_baseline_close_fullscreen_24
     private val expandMapIcon = R.drawable.ic_baseline_open_in_full_24
 
