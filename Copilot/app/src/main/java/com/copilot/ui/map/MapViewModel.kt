@@ -7,8 +7,13 @@ import com.copilot.data.model.Entry
 
 class MapViewModel : ViewModel() {
     private val dummyData = listOf(
-        Entry("Entry 1", "Description 1"),
-        Entry("Entry 2", "Description 2"),
+        Entry("Entry 1", "Description"),
+        Entry("Entry 2", "Long Description Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit"),
+        Entry("Entry 3", "Description"),
+        Entry(
+            "Entry 4",
+            "Even Longer Description Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit"
+        ),
     )
 
     private val _entryList = MutableLiveData<List<Entry>>(dummyData)
