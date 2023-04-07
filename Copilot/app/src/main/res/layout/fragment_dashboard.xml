@@ -37,40 +37,49 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginVertical="@dimen/activity_vertical_margin"
             android:layout_weight="1"
             android:weightSum="2" >
 
             <com.github.anastr.speedviewlib.PointerSpeedometer
-                android:id="@+id/pointerSpeedometer"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                app:sv_speedometerColor="@color/green"/>
-
-            <com.github.anastr.speedviewlib.PointerSpeedometer
                 android:id="@+id/pointerFuelmeter"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                app:sv_indicatorWidth="10dp"
+                app:sv_backgroundCircleColor="@color/green"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                app:sv_startDegree="170"
+                app:sv_endDegree="370"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_indicatorColor="#ffffff"/>
+
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/pointerSpeedometer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:sv_backgroundCircleColor="@color/green"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                app:sv_startDegree="200"
+                app:sv_endDegree="340"/>
 
         </LinearLayout>
 
         <View
             android:layout_width="320dp"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_weight="0"
-            android:background="@color/dark_gray"
+            android:background="@color/gray"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginVertical="@dimen/activity_vertical_margin"/>
+            android:layout_marginVertical="10dp"></View>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:layout_marginVertical="@dimen/activity_vertical_margin"
             app:cardCornerRadius="32dp"
             app:cardElevation="8dp" >
 
