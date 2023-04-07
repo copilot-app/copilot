@@ -1,5 +1,6 @@
 package com.copilot.ui.map
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
 
-    var isMapExpanded = false
+    private var isMapExpanded = false
+    private val collapsedMapPercentageHeight = 0.5f
+    private val expandedMapPercentageHeight = 0.75f
+    private val collapseMapIcon = R.drawable.ic_baseline_close_fullscreen_24
+    private val expandMapIcon = R.drawable.ic_baseline_open_in_full_24
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,14 +61,19 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             binding.resizeMapButton.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
-                    if (isMapExpanded)
-                        R.drawable.ic_baseline_close_fullscreen_24
-                    else
-                        R.drawable.ic_baseline_open_in_full_24,
+                    if (isMapExpanded) collapseMapIcon else expandMapIcon,
                     null
                 )
             )
-            binding.guideline.setGuidelinePercent(if (isMapExpanded) 0.75f else 0.5f)
+            val animator: ValueAnimator = ValueAnimator.ofFloat(
+                if (isMapExpanded) collapsedMapPercentageHeight else expandedMapPercentageHeight,
+                if (isMapExpanded) expandedMapPercentageHeight else collapsedMapPercentageHeight
+            )
+            animator.addUpdateListener { valueAnimator ->
+                val value = valueAnimator.animatedValue as Float
+                binding.guideline.setGuidelinePercent(value)
+            }
+            animator.start()
         }
     }
 }
