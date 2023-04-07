@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.copilot.R
 import com.copilot.databinding.FragmentMapBinding
 import com.google.android.gms.maps.GoogleMap
@@ -40,6 +41,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val adapter = EntryAdapter()
+        binding.entryList.apply {
+            this.adapter = adapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        mapViewModel.entryList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
 
         setupListeners()
 
