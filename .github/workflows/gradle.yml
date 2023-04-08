@@ -28,7 +28,10 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - run: chmod +x ./Copilot/gradlew
+    - run: echo "MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}" > ./Copilot/local.properties
     - name: Build with Gradle
+      env:
+        MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
