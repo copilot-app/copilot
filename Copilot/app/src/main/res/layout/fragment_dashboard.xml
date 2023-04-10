@@ -6,17 +6,105 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_dashboard_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="50dp"
+        app:cardCornerRadius="@dimen/title_corners_radius"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/gray"
+        app:strokeWidth="20dp">
+
+        <TextView
+            android:id="@+id/text_dashboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/title_padding"
+            android:text="DASHBOARD"
+            android:textSize="30sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/card_dashboard_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/pointer_speedometer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                app:sv_backgroundCircleColor="@color/green"
+                app:sv_endDegree="370"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_indicatorColor="#ffffff"
+                app:sv_maxSpeed="200"
+                app:sv_startDegree="170"
+                app:sv_unit="km/h"
+                app:sv_unitTextSize="15sp"
+                app:sv_withTremble="false" />
+
+            <com.github.anastr.speedviewlib.PointerSpeedometer
+                android:id="@+id/pointer_fuelmeter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                android:layout_weight="1"
+                app:sv_backgroundCircleColor="@color/green"
+                app:sv_endDegree="340"
+                app:sv_indicator="NeedleIndicator"
+                app:sv_indicatorColor="#ffffff"
+                app:sv_startDegree="200"
+                app:sv_unit="%"
+                app:sv_unitTextSize="15sp"
+                app:sv_withTremble="false" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="320dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="0"
+            android:background="@color/gray"></View>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="8dp">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map_fragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
