@@ -47,7 +47,7 @@
             android:weightSum="2">
 
             <com.github.anastr.speedviewlib.PointerSpeedometer
-                android:id="@+id/pointerSpeedometer"
+                android:id="@+id/pointer_speedometer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -65,7 +65,7 @@
                 app:sv_withTremble="false" />
 
             <com.github.anastr.speedviewlib.PointerSpeedometer
-                android:id="@+id/pointerFuelmeter"
+                android:id="@+id/pointer_fuelmeter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
