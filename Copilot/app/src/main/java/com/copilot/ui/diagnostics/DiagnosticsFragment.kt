@@ -12,7 +12,6 @@ import com.copilot.databinding.FragmentDiagnosticsBinding
 class DiagnosticsFragment : Fragment() {
 
     private var _binding: FragmentDiagnosticsBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,7 +25,7 @@ class DiagnosticsFragment : Fragment() {
         _binding = FragmentDiagnosticsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
+        val textView: TextView = binding.errorsGroup
         diagnosticsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
