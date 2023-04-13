@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="top"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:weightSum="3">
 
@@ -26,8 +27,8 @@
                 android:id="@+id/text_diagnostics_panel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/title_padding"
                 android:layout_gravity="center"
+                android:padding="@dimen/title_padding"
                 android:text="Diagnostic Panel"
                 android:textSize="30sp" />
 
@@ -51,19 +52,19 @@
                 <TextView
                     android:id="@+id/errors_group"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
                     android:text="Errors"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn_expand_errors"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:drawableBottom="@drawable/ic_arrow_down_24"
-                    android:layout_gravity="center">
-                </Button>
+                    tools:ignore="SpeakableTextPresentCheck"></Button>
 
             </LinearLayout>
 
@@ -87,19 +88,25 @@
                 <TextView
                     android:id="@+id/information_group"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:textSize="20sp"
+                    android:layout_height="wrap_content"
                     android:text="General information"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleViewerOfInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="104dp" />
+
 
                 <Button
                     android:id="@+id/btn_expand_general_information"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:drawableBottom="@drawable/ic_arrow_down_24"
-                    android:layout_gravity="center">
-                </Button>
+                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"></Button>
 
             </LinearLayout>
 
