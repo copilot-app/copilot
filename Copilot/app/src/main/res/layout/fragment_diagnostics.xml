@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:weightSum="3">
 
@@ -57,6 +57,12 @@
                     android:textColor="@color/white"
                     android:textSize="20sp" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleViewerOfErrors"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp">
+                </androidx.recyclerview.widget.RecyclerView>
+
                 <Button
                     android:id="@+id/btn_expand_errors"
                     android:layout_width="48dp"
@@ -64,7 +70,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:drawableBottom="@drawable/ic_arrow_down_24"
-                    tools:ignore="SpeakableTextPresentCheck"></Button>
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
 
@@ -96,8 +102,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewerOfInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="104dp" />
-
+                    android:layout_height="40dp">
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <Button
                     android:id="@+id/btn_expand_general_information"
@@ -106,7 +112,7 @@
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:drawableBottom="@drawable/ic_arrow_down_24"
-                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck"></Button>
+                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
             </LinearLayout>
 
