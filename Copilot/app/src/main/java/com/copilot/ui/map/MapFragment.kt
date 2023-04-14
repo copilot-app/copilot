@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.copilot.R
 import com.copilot.databinding.FragmentMapBinding
 import com.google.android.gms.maps.GoogleMap
@@ -17,6 +19,8 @@ import com.google.android.gms.maps.SupportMapFragment
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
+    private lateinit var entryAdapter: EntryAdapter
+    private lateinit var mapViewModel: MapViewModel
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
@@ -32,8 +36,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val mapViewModel =
-            ViewModelProvider(this)[MapViewModel::class.java]
+        mapViewModel = ViewModelProvider(this)[MapViewModel::class.java]
 
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -42,13 +45,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val adapter = EntryAdapter()
+        entryAdapter = EntryAdapter()
         binding.entryList.apply {
-            this.adapter = adapter
+            this.adapter = entryAdapter
             layoutManager = LinearLayoutManager(context)
         }
         mapViewModel.entryList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            entryAdapter.submitList(it)
         }
 
         setupListeners()
@@ -85,5 +88,23 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             animator.start()
         }
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val entry = entryAdapter.currentList[viewHolder.adapterPosition]
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(binding.entryList)
     }
 }

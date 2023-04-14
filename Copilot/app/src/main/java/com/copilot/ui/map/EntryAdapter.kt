@@ -3,12 +3,13 @@ package com.copilot.ui.map
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.copilot.data.model.Entry
 import com.copilot.databinding.ItemEntryBinding
 
-class EntryAdapter() :
+class EntryAdapter :
     ListAdapter<Entry, EntryAdapter.EntryViewHolder>(object : DiffUtil.ItemCallback<Entry>() {
         override fun areItemsTheSame(oldItem: Entry, newItem: Entry): Boolean {
             return oldItem.title == newItem.title
