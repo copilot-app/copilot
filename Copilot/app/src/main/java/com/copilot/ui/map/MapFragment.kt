@@ -103,6 +103,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val entry = entryAdapter.currentList[viewHolder.adapterPosition]
+                mapViewModel.deleteEntry(entry)
             }
         })
         itemTouchHelper.attachToRecyclerView(binding.entryList)
