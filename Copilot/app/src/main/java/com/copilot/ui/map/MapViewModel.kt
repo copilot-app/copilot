@@ -18,4 +18,8 @@ class MapViewModel : ViewModel() {
 
     private val _entryList = MutableLiveData<List<Entry>>(dummyData)
     val entryList: LiveData<List<Entry>> = _entryList
+
+    fun deleteEntry(entry: Entry?) {
+        _entryList.value = _entryList.value?.filter { it != entry }
+    }
 }
