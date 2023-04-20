@@ -1,6 +1,6 @@
 package com.copilot.data.model
 
-class Entry(
+data class Entry(
     var title: String,
     var description: String,
 )
