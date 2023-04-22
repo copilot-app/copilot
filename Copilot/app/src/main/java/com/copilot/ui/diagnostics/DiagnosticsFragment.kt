@@ -63,7 +63,7 @@ class DiagnosticsFragment : Fragment() {
 
         binding.btnExpandErrors.setOnClickListener {
             if (!isErrorsExpanded) {
-                binding.recycleViewerOfErrors.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 3)
+                binding.recycleViewerOfErrors.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 4)
                 binding.recycleViewerOfInfo.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
 
                 binding.btnExpandErrors.setIconResource(R.drawable.ic_arrow_up_24)
@@ -83,7 +83,7 @@ class DiagnosticsFragment : Fragment() {
 
         binding.btnExpandGeneralInformation.setOnClickListener {
             if (!isInformationExpanded) {
-                binding.recycleViewerOfInfo.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 3)
+                binding.recycleViewerOfInfo.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 4)
                 binding.recycleViewerOfErrors.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
 
                 binding.btnExpandGeneralInformation.setIconResource(R.drawable.ic_arrow_up_24)
