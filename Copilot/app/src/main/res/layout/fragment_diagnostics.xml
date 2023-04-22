@@ -10,9 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
-        android:layout_marginTop="20dp"
         android:orientation="vertical"
-        android:weightSum="3">
+        android:weightSum="3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="?actionBarSize"
+        tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -38,9 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/gray"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/gray">
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,16 +62,17 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewerOfErrors"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="80dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_expand_errors"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
-                    android:drawableBottom="@drawable/ic_arrow_down_24"
+                    app:icon="@drawable/ic_arrow_down_24"
+                    app:iconGravity="textTop"
+                    app:iconTint="@color/black"
                     tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
@@ -80,11 +83,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/gray"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/gray">
+            app:cardElevation="4dp">
 
             <LinearLayout
+                app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment_activity_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -102,17 +106,18 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewerOfInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="80dp"/>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_expand_general_information"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:drawableBottom="@drawable/ic_arrow_down_24"
-                    tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+                    app:iconGravity="textTop"
+                    app:iconTint="@color/black"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
 
