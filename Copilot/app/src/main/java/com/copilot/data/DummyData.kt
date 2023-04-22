@@ -19,15 +19,15 @@ object DummyData {
         ),
     )
     val locationHistory = listOf(
-        Location(LatLng(51.099619, 17.035227), Instant.parse("2023-04-20T10:00:00Z")),
-        Location(LatLng(51.099237, 17.035385), Instant.parse("2023-04-20T10:05:00Z")),
-        Location(LatLng(51.098766, 17.035438), Instant.parse("2023-04-20T10:10:00Z")),
-        Location(LatLng(51.098540, 17.035492), Instant.parse("2023-04-20T10:15:00Z")),
-        Location(LatLng(51.098315, 17.035557), Instant.parse("2023-04-20T10:20:00Z")),
-        Location(LatLng(51.098056, 17.035635), Instant.parse("2023-04-20T10:25:00Z")),
-        Location(LatLng(51.097819, 17.035698), Instant.parse("2023-04-20T10:30:00Z")),
-        Location(LatLng(51.097425, 17.035807), Instant.parse("2023-04-20T10:35:00Z")),
-        Location(LatLng(51.097213, 17.035875), Instant.parse("2023-04-20T10:40:00Z")),
-        Location(LatLng(51.096927, 17.035960), Instant.parse("2023-04-20T10:45:00Z"))
+        Location(LatLng(51.107858, 17.037076), Instant.parse("2023-04-20T10:00:00Z")),
+        Location(LatLng(51.107381, 17.035978), Instant.parse("2023-04-20T10:05:00Z")),
+        Location(LatLng(51.107229, 17.033839), Instant.parse("2023-04-20T10:10:00Z")),
+        Location(LatLng(51.107524, 17.031866), Instant.parse("2023-04-20T10:15:00Z")),
+        Location(LatLng(51.108048, 17.029651), Instant.parse("2023-04-20T10:20:00Z")),
+        Location(LatLng(51.108572, 17.029704), Instant.parse("2023-04-20T10:25:00Z")),
+        Location(LatLng(51.109077, 17.029583), Instant.parse("2023-04-20T10:30:00Z")),
+        Location(LatLng(51.109315, 17.028832), Instant.parse("2023-04-20T10:35:00Z")),
+        Location(LatLng(51.110082, 17.029082), Instant.parse("2023-04-20T10:40:00Z")),
+        Location(LatLng(51.111254, 17.029606), Instant.parse("2023-04-20T10:45:00Z"))
     )
 }
