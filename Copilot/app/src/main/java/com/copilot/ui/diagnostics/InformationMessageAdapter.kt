@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.copilot.R
-import com.copilot.data.model.Information
+import com.copilot.data.model.InformationMessage
 
-class InformationAdapter(var mList: List<Information>) :
-    RecyclerView.Adapter<InformationAdapter.InformationViewHolder>() {
+class InformationMessageAdapter(var mList: List<InformationMessage>) :
+    RecyclerView.Adapter<InformationMessageAdapter.InformationViewHolder>() {
 
     class InformationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val informationTitle : TextView = itemView.findViewById(R.id.information_title)
@@ -17,7 +17,7 @@ class InformationAdapter(var mList: List<Information>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InformationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_gen_info, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message_general_info, parent, false)
         return InformationViewHolder(view)
     }
 

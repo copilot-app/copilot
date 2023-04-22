@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -40,11 +39,11 @@ class DiagnosticsFragment : Fragment() {
             textView.text = it
         }
 
-        val informationAdapter = InformationAdapter(informationList)
+        val informationMessageAdapter = InformationMessageAdapter(informationList)
 
         binding.recycleViewerOfInfo.apply {
             this.setHasFixedSize(true)
-            this.adapter = informationAdapter
+            this.adapter = informationMessageAdapter
             layoutManager = LinearLayoutManager(context)
         }
 

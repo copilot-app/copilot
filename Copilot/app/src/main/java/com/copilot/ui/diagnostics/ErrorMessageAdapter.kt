@@ -17,7 +17,7 @@ class ErrorMessageAdapter(var mList: ArrayList<ErrorMessage>) :
      }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ErrorViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_error, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message_error, parent, false)
         return ErrorViewHolder(view)
     }
 

@@ -1,6 +1,6 @@
 package com.copilot.data.model
 
-class Information(
+class InformationMessage(
     var title: String,
     var description: String,
 )
