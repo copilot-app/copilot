@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.copilot.R
 import com.copilot.databinding.FragmentMapBinding
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MarkerOptions
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
@@ -30,6 +32,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val expandedMapPercentageHeight = 0.6f
     private val collapseMapIcon = R.drawable.ic_baseline_close_fullscreen_24
     private val expandMapIcon = R.drawable.ic_baseline_open_in_full_24
+
+    private val defaultMapZoom = 15f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +70,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+        drawLocationHistory()
     }
 
     private fun setupListeners() {
@@ -107,5 +112,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
         })
         itemTouchHelper.attachToRecyclerView(binding.entryList)
+    }
+
+    private fun drawLocationHistory() {
+        mapViewModel.locationHistory.observe(viewLifecycleOwner) { history ->
+            for (location in history) {
+                map.addMarker(
+                    MarkerOptions().position(location.coordinates)
+                        .title(location.timestamp.toString())
+                )
+            }
+            map.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    history.last().coordinates,
+                    defaultMapZoom
+                )
+            )
+        }
     }
 }
