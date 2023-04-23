@@ -6,59 +6,56 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.copilot.R
-import com.copilot.data.model.ErrorMessage
-import com.copilot.data.model.Information
 import com.copilot.databinding.FragmentDiagnosticsBinding
 
+
+
 class DiagnosticsFragment : Fragment() {
+    private lateinit var diagnosticsViewModel: DiagnosticsViewModel
+    private lateinit var errorMessageAdapter: ErrorMessageAdapter
+    private lateinit var informationMessageAdapter: InformationMessageAdapter
 
     private var _binding: FragmentDiagnosticsBinding? = null
     private val binding get() = _binding!!
-
-    private var informationList = ArrayList<Information>()
-    private var errorList = ArrayList<ErrorMessage>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val diagnosticsViewModel =
-            ViewModelProvider(this)[DiagnosticsViewModel::class.java]
+        diagnosticsViewModel = ViewModelProvider(this)[DiagnosticsViewModel::class.java]
 
         _binding = FragmentDiagnosticsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.errorsGroup
-        diagnosticsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
-        val informationMessageAdapter = InformationMessageAdapter(informationList)
-
-        binding.recycleViewerOfInfo.apply {
-            this.setHasFixedSize(true)
-            this.adapter = informationMessageAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        val errorAdapter = ErrorMessageAdapter(errorList)
-
+        val errorAdapter = ErrorMessageAdapter()
         binding.recycleViewerOfErrors.apply {
-            this.setHasFixedSize(true)
             this.adapter = errorAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+
+        diagnosticsViewModel.errorsList.observe(viewLifecycleOwner) {
+            errorAdapter.submitList(it)
+        }
+
+        val informationAdapter = InformationMessageAdapter()
+        binding.recycleViewerOfInfo.apply {
+            this.adapter = informationAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        diagnosticsViewModel.informationList.observe(viewLifecycleOwner) {
+            informationAdapter.submitList(it)
         }
 
         var isErrorsExpanded = false
         var isInformationExpanded = false
 
-        var heightOfCardView = resources.getDimensionPixelSize(R.dimen.card_view_height)
+        val heightOfCardView = resources.getDimensionPixelSize(R.dimen.card_view_height)
 
         binding.btnExpandErrors.setOnClickListener {
             if (!isErrorsExpanded) {
@@ -101,21 +98,7 @@ class DiagnosticsFragment : Fragment() {
             }
         }
 
-        addDatatoLists()
-
         return root
-    }
-
-    private fun addDatatoLists() {
-        informationList.add(Information("Water temperature", "90"))
-        informationList.add(Information("Oil temperature", "60"))
-        informationList.add(Information("RPM", "900"))
-        informationList.add(Information("Fuel consumption", "5l / 100km"))
-
-        errorList.add(ErrorMessage("Fuel Delivery Error", "P0148"))
-        errorList.add(ErrorMessage("Clutch Position Control Error", "P0810"))
-        errorList.add(ErrorMessage("Exhaust Pressure Sensor Low", "P0472"))
-        errorList.add(ErrorMessage("Control Module Programming Error", "P0602"))
     }
 
     override fun onDestroyView() {
