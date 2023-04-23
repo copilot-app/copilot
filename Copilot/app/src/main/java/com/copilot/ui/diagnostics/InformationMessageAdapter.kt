@@ -4,29 +4,53 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.copilot.R
+import com.copilot.data.model.ErrorMessage
 import com.copilot.data.model.InformationMessage
+import com.copilot.databinding.ItemMessageErrorBinding
+import com.copilot.databinding.ItemMessageGeneralInfoBinding
 
-class InformationMessageAdapter(var mList: List<InformationMessage>) :
-    RecyclerView.Adapter<InformationMessageAdapter.InformationViewHolder>() {
+class InformationMessageAdapter :
+    ListAdapter<InformationMessage, InformationMessageAdapter.InformationViewHolder>(object : DiffUtil.ItemCallback<InformationMessage> () {
+        override fun areItemsTheSame(
+            oldItem: InformationMessage,
+            newItem: InformationMessage
+        ): Boolean {
+            return oldItem.title == newItem.title
+        }
 
-    class InformationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val informationTitle : TextView = itemView.findViewById(R.id.information_title)
-        val informationDescription : TextView = itemView.findViewById(R.id.information_description)
+        override fun areContentsTheSame(
+            oldItem: InformationMessage,
+            newItem: InformationMessage
+        ): Boolean {
+            return oldItem.description == newItem.description
+        }
+    }) {
+
+    class InformationViewHolder(private val binding: ItemMessageGeneralInfoBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(informationMessage: InformationMessage) {
+            binding.apply {
+                binding.informationTitle.text = informationMessage.title
+                binding.informationDescription.text = informationMessage.description
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InformationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message_general_info, parent, false)
-        return InformationViewHolder(view)
+        return InformationMessageAdapter.InformationViewHolder(
+            ItemMessageGeneralInfoBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: InformationViewHolder, position: Int) {
-        holder.informationTitle.text = mList[position].title
-        holder.informationDescription.text = mList[position].description
-    }
-
-    override fun getItemCount(): Int {
-        return mList.size
+        val entry = getItem(position)
+        holder.bind(entry)
     }
 }
