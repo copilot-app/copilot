@@ -1,32 +1,45 @@
 package com.copilot.ui.diagnostics
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.copilot.R
 import com.copilot.data.model.ErrorMessage
+import com.copilot.databinding.ItemMessageErrorBinding
 
-class ErrorMessageAdapter(var mList: ArrayList<ErrorMessage>) :
-    RecyclerView.Adapter<ErrorMessageAdapter.ErrorViewHolder>() {
+class ErrorMessageAdapter :
+    ListAdapter<ErrorMessage, ErrorMessageAdapter.ErrorViewHolder>(object : DiffUtil.ItemCallback<ErrorMessage>() {
+        override fun areItemsTheSame(oldItem: ErrorMessage, newItem: ErrorMessage): Boolean {
+            return oldItem.title == newItem.title
+        }
 
-     class ErrorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-         val errorTitle : TextView = itemView.findViewById(R.id.error_title)
-         val errorCode : TextView = itemView.findViewById(R.id.error_code)
+        override fun areContentsTheSame(oldItem: ErrorMessage, newItem: ErrorMessage): Boolean {
+            return oldItem.code == newItem.code
+        }
+    }) {
+
+     class ErrorViewHolder(private val binding: ItemMessageErrorBinding) : RecyclerView.ViewHolder(binding.root) {
+         fun bind(errorMessage: ErrorMessage) {
+             binding.apply {
+                 binding.errorTitle.text = errorMessage.title
+                 binding.errorCode.text = errorMessage.code
+             }
+         }
      }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ErrorViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message_error, parent, false)
-        return ErrorViewHolder(view)
+        return ErrorViewHolder(
+            ItemMessageErrorBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ErrorViewHolder, position: Int) {
-        holder.errorTitle.text = mList[position].title
-        holder.errorCode.text = mList[position].code
-    }
-
-    override fun getItemCount(): Int {
-        return mList.size
+        val entry = getItem(position)
+        holder.bind(entry)
     }
 }
