@@ -9,11 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.copilot.R
 import com.copilot.databinding.FragmentDashboardBinding
 import com.github.anastr.speedviewlib.PointerSpeedometer
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 class DashboardFragment : Fragment(), OnMapReadyCallback {
