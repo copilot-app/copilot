@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -17,7 +19,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
@@ -118,10 +122,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapViewModel.locationHistory.observe(viewLifecycleOwner) { history ->
             for (location in history) {
                 map.addMarker(
-                    MarkerOptions().position(location.coordinates)
+                    MarkerOptions()
+                        .position(location.coordinates)
+                        .anchor(0.5f, 0.5f)
                         .title(location.timestamp.toString())
+                        .snippet(location.velocity.toString() + " km/h")
+                        .icon(
+                            BitmapDescriptorFactory.fromBitmap(
+                                ContextCompat.getDrawable(
+                                    requireContext(),
+                                    R.drawable.ic_baseline_circle_24
+                                )!!.toBitmap()
+                            )
+                        )
                 )
             }
+            map.addPolyline(
+                PolylineOptions().addAll(history.map { it.coordinates })
+            )
             map.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     history.last().coordinates,
