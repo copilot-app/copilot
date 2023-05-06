@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -77,7 +78,6 @@ class MainActivity : AppCompatActivity() {
         "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [9876::12234]",
         "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [1]", "ESP32 [1]", "ESP32 [2]")
         val builder = AlertDialog.Builder(this)
-
         with(builder)
         {
             setTitle("New vehicle")
@@ -88,9 +88,14 @@ class MainActivity : AppCompatActivity() {
 
             })
             setNegativeButton(android.R.string.cancel, negativeButtonClick)
-            show()
         }
 
-
+        val alertDialog = builder.create()
+        alertDialog.show()
+        val params = WindowManager.LayoutParams()
+        params.copyFrom(alertDialog.window?.attributes)
+        val screenHeightPercentage = 0.60
+        params.height = (resources.displayMetrics.heightPixels * screenHeightPercentage).toInt()
+        alertDialog.window?.attributes = params
     }
 }
