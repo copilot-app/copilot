@@ -3,6 +3,7 @@ package com.copilot
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.copilot.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -45,6 +47,11 @@ class MainActivity : AppCompatActivity() {
             connectedVehiclesAlert(it)
             true
         }
+
+        val dashboardTab = navView.findViewById<BottomNavigationItemView>(R.id.navigation_dashboard)
+        val badge: View =
+            LayoutInflater.from(this).inflate(R.layout.badge_plus, dashboardTab, false)
+        dashboardTab.addView(badge)
     }
 
     fun connectedVehiclesAlert(view: View){
