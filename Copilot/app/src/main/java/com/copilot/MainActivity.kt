@@ -21,17 +21,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     val positiveButtonClick = { dialog: DialogInterface, which: Int ->
-        Toast.makeText(applicationContext,
-            android.R.string.yes, Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            applicationContext,
+            android.R.string.ok, Toast.LENGTH_SHORT
+        ).show()
     }
     val negativeButtonClick = { dialog: DialogInterface, which: Int ->
-        Toast.makeText(applicationContext,
-            android.R.string.no, Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            applicationContext,
+            android.R.string.cancel, Toast.LENGTH_SHORT
+        ).show()
     }
-    val neutralButtonClick = { dialog: DialogInterface, which: Int ->
-        Toast.makeText(applicationContext,
-            "Maybe", Toast.LENGTH_SHORT).show()
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -55,38 +56,58 @@ class MainActivity : AppCompatActivity() {
         dashboardTab.addView(badge)
     }
 
-    fun connectedVehiclesAlert(view: View){
+    fun connectedVehiclesAlert(view: View) {
+        val items = arrayOf("ESP32 [1]", "ESP32 [2]", "ESP32 [3]")
         val builder = AlertDialog.Builder(this)
 
         with(builder)
         {
-            setTitle("Your vehicles")
-
-            setPositiveButton("Add", DialogInterface.OnClickListener { dialogInterface: DialogInterface, i: Int ->
-                addVehicleAlert(view)
-            })
+            setTitle("Your Copilot devices")
+            setItems(items) { dialog, which ->
+                Toast.makeText(applicationContext, items[which] + " is chosen", Toast.LENGTH_SHORT)
+                    .show()
+                // TODO: Pair and request data
+            }
+            setPositiveButton(
+                "Add",
+                DialogInterface.OnClickListener { dialogInterface: DialogInterface, i: Int ->
+                    addVehicleAlert(view)
+                })
             setNegativeButton(android.R.string.cancel, negativeButtonClick)
-            setNeutralButton("Maybe", neutralButtonClick)
             show()
         }
-
-
     }
 
-    fun addVehicleAlert(view: View){
-        val items = arrayOf("ESP32 [::12]", "ESP32 [98:11:11:11:12:23]", "ESP32 [9876::12234]", "ESP32 [9876::12234]",
-        "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [9876::12234]",
-        "ESP32 [9876::12234]", "ESP32 [9876::12234]", "ESP32 [1]", "ESP32 [1]", "ESP32 [2]")
+    fun addVehicleAlert(view: View) {
+        val items = arrayOf(
+            "ESP32 [::12]",
+            "ESP32 [98:11:11:11:12:23]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [9876::12234]",
+            "ESP32 [1]",
+            "ESP32 [1]",
+            "ESP32 [2]"
+        )
         val builder = AlertDialog.Builder(this)
         with(builder)
         {
-            setTitle("New vehicle")
+            setTitle("Choose active device")
             setItems(items) { dialog, which ->
-                Toast.makeText(applicationContext, items[which] + " is clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, items[which] + " is clicked", Toast.LENGTH_SHORT)
+                    .show()
             }
-            setPositiveButton("Add", DialogInterface.OnClickListener { dialogInterface: DialogInterface, i: Int ->
-
-            })
+            setPositiveButton(
+                "Add",
+                DialogInterface.OnClickListener { dialogInterface: DialogInterface, i: Int ->
+                    // TODO: Pair and request data
+                })
             setNegativeButton(android.R.string.cancel, negativeButtonClick)
         }
 
