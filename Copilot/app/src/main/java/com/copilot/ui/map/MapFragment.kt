@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.copilot.R
+import com.copilot.data.model.Location
 import com.copilot.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -38,6 +39,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val expandMapIcon = R.drawable.ic_baseline_open_in_full_24
 
     private val defaultMapZoom = 15f
+
+    private val mapMarkerIcon = R.drawable.ic_baseline_circle_24
+    private val velocityColorMap = mapOf(
+        0.0 to R.color.forest_green,
+        30.0 to R.color.yellow,
+        60.0 to R.color.orange,
+        90.0 to R.color.red
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,26 +129,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun drawLocationHistory() {
         mapViewModel.locationHistory.observe(viewLifecycleOwner) { history ->
-            for (location in history) {
-                map.addMarker(
-                    MarkerOptions()
-                        .position(location.coordinates)
-                        .anchor(0.5f, 0.5f)
-                        .title(location.timestamp.toString())
-                        .snippet(location.velocity.toString() + " km/h")
-                        .icon(
-                            BitmapDescriptorFactory.fromBitmap(
-                                ContextCompat.getDrawable(
-                                    requireContext(),
-                                    R.drawable.ic_baseline_circle_24
-                                )!!.toBitmap()
-                            )
-                        )
-                )
-            }
-            map.addPolyline(
-                PolylineOptions().addAll(history.map { it.coordinates })
-            )
+            addMarkers(history)
+
+            if (history.size > 1)
+                addPolylines(history)
+
             map.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     history.last().coordinates,
@@ -147,5 +141,52 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 )
             )
         }
+    }
+
+    private fun addMarkers(history: List<Location>) {
+        history.forEach { location ->
+            map.addMarker(
+                MarkerOptions()
+                    .position(location.coordinates)
+                    .anchor(0.5f, 0.5f)
+                    .title(location.timestamp.toString())
+                    .snippet(location.velocity.toString() + " km/h")
+                    .icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                mapMarkerIcon
+                            )!!.toBitmap()
+                        )
+                    )
+            )
+        }
+    }
+
+    private fun addPolylines(history: List<Location>) {
+        for (i in 1 until history.size) {
+            val previousLocation = history[i - 1]
+            val currentLocation = history[i]
+            val averageVelocity = (previousLocation.velocity + currentLocation.velocity) / 2
+            val polylineColor = getPolylineColor(averageVelocity)
+            map.addPolyline(
+                PolylineOptions()
+                    .add(previousLocation.coordinates, currentLocation.coordinates)
+                    .color(polylineColor)
+            )
+        }
+    }
+
+    private fun getPolylineColor(velocity: Double): Int {
+        var polylineColor =
+            ContextCompat.getColor(requireContext(), velocityColorMap.values.first())
+        for ((minVelocity, color) in velocityColorMap) {
+            if (velocity <= minVelocity)
+                return polylineColor
+            else
+                polylineColor = ContextCompat.getColor(requireContext(), color)
+
+        }
+        return polylineColor
     }
 }
