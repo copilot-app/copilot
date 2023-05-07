@@ -11,6 +11,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:background="@drawable/ic_baseline_add_circle_24"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/green"
         android:gravity="center" />
 </FrameLayout>
