@@ -30,4 +30,21 @@ object DummyData {
         Location(LatLng(51.110082, 17.029082), Instant.parse("2023-04-20T10:40:00Z"), 20.0),
         Location(LatLng(51.111254, 17.029606), Instant.parse("2023-04-20T10:45:00Z"), 15.0)
     )
+    val connectedDevices = arrayOf("ESP32 [1]", "ESP32 [2]", "ESP32 [3]")
+    val pairedBluetoothDevices = arrayOf(
+        "ESP32 [::12]",
+        "ESP32 [98:11:11:11:12:23]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [9876::12234]",
+        "ESP32 [1]",
+        "ESP32 [1]",
+        "ESP32 [2]"
+    )
 }
