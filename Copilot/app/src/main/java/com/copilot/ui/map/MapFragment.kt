@@ -20,9 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
@@ -167,17 +165,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         for (i in 1 until history.size) {
             val previousLocation = history[i - 1]
             val currentLocation = history[i]
-            val averageVelocity = (previousLocation.velocity + currentLocation.velocity) / 2
-            val polylineColor = getPolylineColor(averageVelocity)
+
             map.addPolyline(
                 PolylineOptions()
                     .add(previousLocation.coordinates, currentLocation.coordinates)
-                    .color(polylineColor)
+                    .addSpan(
+                        StyleSpan(
+                            StrokeStyle.gradientBuilder(
+                                getVelocityColor(previousLocation.velocity),
+                                getVelocityColor(currentLocation.velocity)
+                            ).build()
+                        )
+                    )
+                    .width(15f)
             )
         }
     }
 
-    private fun getPolylineColor(velocity: Double): Int {
+    private fun getVelocityColor(velocity: Double): Int {
         var polylineColor =
             ContextCompat.getColor(requireContext(), velocityColorMap.values.first())
         for ((minVelocity, color) in velocityColorMap) {
