@@ -3,21 +3,16 @@ package com.copilot.ui.map
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.copilot.data.DummyData
 import com.copilot.data.model.Entry
+import com.copilot.data.model.Location
 
 class MapViewModel : ViewModel() {
-    private val dummyData = listOf(
-        Entry("Entry 1", "Description"),
-        Entry("Entry 2", "Long Description Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit"),
-        Entry("Entry 3", "Description"),
-        Entry(
-            "Entry 4",
-            "Even Longer Description Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit"
-        ),
-    )
-
-    private val _entryList = MutableLiveData<List<Entry>>(dummyData)
+    private val _entryList = MutableLiveData<List<Entry>>(DummyData.entryList)
     val entryList: LiveData<List<Entry>> = _entryList
+
+    private val _locationHistory = MutableLiveData<List<Location>>(DummyData.locationHistory)
+    val locationHistory: LiveData<List<Location>> = _locationHistory
 
     fun deleteEntry(entry: Entry?) {
         _entryList.value = _entryList.value?.filter { it != entry }
