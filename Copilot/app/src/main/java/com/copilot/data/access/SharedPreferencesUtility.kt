@@ -3,9 +3,8 @@ package com.copilot.data.access
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.sql.Types.NULL
 
-private const val DATA_FILE = "tasks_file"
+private const val DATA_FILE = "SharedPreferences"
 
 fun saveUserData(context: Context, key: String, value: Any ) {
     val jsonObjectString = Gson().toJson(value)
@@ -13,12 +12,12 @@ fun saveUserData(context: Context, key: String, value: Any ) {
     sharedPreferences.edit().putString(key, jsonObjectString).apply()
 }
 
-fun <T: Any> getUserData(context: Context, key: String): Any? {
+fun <T: Any> getUserData(context: Context, key: String): T? {
     val sharedPreferences = context.getSharedPreferences(DATA_FILE, Context.MODE_PRIVATE)
     val value = sharedPreferences.getString(key, "")
 
     if (value.isNullOrEmpty()) {
-        return NULL
+        return null
     }
 
     val type = object : TypeToken<T>() {}.type
