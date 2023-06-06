@@ -1,17 +1,36 @@
 package com.copilot.ui.menu
 
+import android.app.Activity
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat.*
 import com.copilot.data.DummyData
 
 class VehicleMenu(private val context: Context, view: View) {
 
     private val screenHeightPercentage = 0.60
 
+    private var bluetoothManager: BluetoothManager? = null
+    private val bluetoothAdapter: BluetoothAdapter?
+
     init {
+        bluetoothManager =
+            getSystemService(context, BluetoothManager::class.java)
+        bluetoothAdapter = bluetoothManager?.adapter
+        if (bluetoothAdapter == null)
+            Log.d("Bluetooth", "Bluetooth is not supported on this device")
+        else if (!bluetoothAdapter.isEnabled)
+            startActivity(context, Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), null)
         showConnectedDevicesAlert(view)
     }
 
@@ -45,15 +64,33 @@ class VehicleMenu(private val context: Context, view: View) {
     }
 
     private fun showNewDeviceAlert(view: View) {
+        var deviceNames = arrayOf("")
+        if (checkSelfPermission(
+                context,
+                android.Manifest.permission.BLUETOOTH
+            ) == PERMISSION_GRANTED
+        ) {
+            val pairedDevices = bluetoothAdapter?.bondedDevices
+            deviceNames = pairedDevices?.map { device: BluetoothDevice -> device.name }
+                ?.toTypedArray() ?: arrayOf()
+        }
+        else {
+            requestPermissions(
+                context as Activity,
+                arrayOf(android.Manifest.permission.BLUETOOTH),
+                1
+            )
+        }
+
         val builder = AlertDialog.Builder(context)
 
         with(builder)
         {
             setTitle("Choose active device")
-            setItems(DummyData.pairedBluetoothDevices) { _, which ->
+            setItems(deviceNames) { _, which ->
                 Toast.makeText(
                     context,
-                    DummyData.pairedBluetoothDevices[which] + " clicked",
+                    deviceNames[which] + " clicked",
                     Toast.LENGTH_SHORT
                 ).show()
             }
