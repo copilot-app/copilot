@@ -1,17 +1,19 @@
 package com.copilot.ui.menu
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat.*
 import com.copilot.data.DummyData
 
 class VehicleMenu(private val context: Context, view: View) {
@@ -62,9 +64,23 @@ class VehicleMenu(private val context: Context, view: View) {
     }
 
     private fun showNewDeviceAlert(view: View) {
-        val pairedDevices = bluetoothAdapter?.bondedDevices
-        val deviceNames = pairedDevices?.map { device: BluetoothDevice -> device.name }
-            ?.toTypedArray() ?: arrayOf()
+        var deviceNames = arrayOf("")
+        if (checkSelfPermission(
+                context,
+                android.Manifest.permission.BLUETOOTH
+            ) == PERMISSION_GRANTED
+        ) {
+            val pairedDevices = bluetoothAdapter?.bondedDevices
+            deviceNames = pairedDevices?.map { device: BluetoothDevice -> device.name }
+                ?.toTypedArray() ?: arrayOf()
+        }
+        else {
+            requestPermissions(
+                context as Activity,
+                arrayOf(android.Manifest.permission.BLUETOOTH),
+                1
+            )
+        }
 
         val builder = AlertDialog.Builder(context)
 
