@@ -1,10 +1,17 @@
 package com.copilot.ui.menu
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import com.copilot.data.DummyData
 
 class VehicleMenu(private val context: Context, view: View) {
@@ -45,15 +52,27 @@ class VehicleMenu(private val context: Context, view: View) {
     }
 
     private fun showNewDeviceAlert(view: View) {
+        val bluetoothManager: BluetoothManager? =
+            getSystemService(context, BluetoothManager::class.java)
+        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager?.adapter
+        if (bluetoothAdapter == null)
+            Log.d("Bluetooth", "Bluetooth is not supported on this device")
+        else if (!bluetoothAdapter.isEnabled)
+            startActivity(context, Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), null)
+
+        val pairedDevices = bluetoothAdapter?.bondedDevices
+        val deviceNames = pairedDevices?.map { device: BluetoothDevice -> device.name }
+            ?.toTypedArray() ?: arrayOf()
+
         val builder = AlertDialog.Builder(context)
 
         with(builder)
         {
             setTitle("Choose active device")
-            setItems(DummyData.pairedBluetoothDevices) { _, which ->
+            setItems(deviceNames) { _, which ->
                 Toast.makeText(
                     context,
-                    DummyData.pairedBluetoothDevices[which] + " clicked",
+                    deviceNames[which] + " clicked",
                     Toast.LENGTH_SHORT
                 ).show()
             }
