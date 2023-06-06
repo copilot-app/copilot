@@ -18,7 +18,17 @@ class VehicleMenu(private val context: Context, view: View) {
 
     private val screenHeightPercentage = 0.60
 
+    private var bluetoothManager: BluetoothManager? = null
+    private val bluetoothAdapter: BluetoothAdapter?
+
     init {
+        bluetoothManager =
+            getSystemService(context, BluetoothManager::class.java)
+        bluetoothAdapter = bluetoothManager?.adapter
+        if (bluetoothAdapter == null)
+            Log.d("Bluetooth", "Bluetooth is not supported on this device")
+        else if (!bluetoothAdapter.isEnabled)
+            startActivity(context, Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), null)
         showConnectedDevicesAlert(view)
     }
 
@@ -52,14 +62,6 @@ class VehicleMenu(private val context: Context, view: View) {
     }
 
     private fun showNewDeviceAlert(view: View) {
-        val bluetoothManager: BluetoothManager? =
-            getSystemService(context, BluetoothManager::class.java)
-        val bluetoothAdapter: BluetoothAdapter? = bluetoothManager?.adapter
-        if (bluetoothAdapter == null)
-            Log.d("Bluetooth", "Bluetooth is not supported on this device")
-        else if (!bluetoothAdapter.isEnabled)
-            startActivity(context, Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), null)
-
         val pairedDevices = bluetoothAdapter?.bondedDevices
         val deviceNames = pairedDevices?.map { device: BluetoothDevice -> device.name }
             ?.toTypedArray() ?: arrayOf()
