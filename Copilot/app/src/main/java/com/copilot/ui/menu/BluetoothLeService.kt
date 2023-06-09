@@ -2,10 +2,7 @@ package com.copilot.ui.menu
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.*
 import android.bluetooth.BluetoothProfile.STATE_CONNECTED
 import android.bluetooth.BluetoothProfile.STATE_DISCONNECTED
 import android.content.Intent
@@ -59,6 +56,11 @@ class BluetoothLeService : Service() {
         sendBroadcast(intent)
     }
 
+    private fun broadcastUpdate(action: String, characteristic: BluetoothGattCharacteristic) {
+        val intent = Intent(action)
+        sendBroadcast(intent)
+    }
+
     private val bluetoothGattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             if (newState == STATE_CONNECTED) {
@@ -69,11 +71,40 @@ class BluetoothLeService : Service() {
                 broadcastUpdate(ACTION_GATT_DISCONNECTED)
             }
         }
+
+        override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED)
+            } else {
+                Log.w(TAG, "onServicesDiscovered received: $status")
+            }
+        }
+
+        override fun onCharacteristicRead(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+            value: ByteArray,
+            status: Int
+        ) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic)
+            }
+        }
+
+        override fun onCharacteristicChanged(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+            value: ByteArray
+        ) {
+            broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic)
+        }
     }
 
     companion object {
         const val ACTION_GATT_CONNECTED = "com.copilot.ACTION_GATT_CONNECTED"
         const val ACTION_GATT_DISCONNECTED = "com.copilot.ACTION_GATT_DISCONNECTED"
+        const val ACTION_GATT_SERVICES_DISCOVERED = "com.copilot.ACTION_GATT_SERVICES_DISCOVERED"
+        const val ACTION_DATA_AVAILABLE = "com.copilot.ACTION_DATA_AVAILABLE"
     }
 
     override fun onBind(intent: Intent?): IBinder {
@@ -91,5 +122,14 @@ class BluetoothLeService : Service() {
             gatt.close()
             bluetoothGatt = null
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    public fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
+        bluetoothGatt?.readCharacteristic(characteristic)
+    }
+
+    fun getSupportedGattServices(): List<BluetoothGattService>? {
+        return bluetoothGatt?.services
     }
 }
