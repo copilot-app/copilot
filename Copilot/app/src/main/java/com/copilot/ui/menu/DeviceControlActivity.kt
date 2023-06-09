@@ -11,6 +11,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.copilot.R
 
+val btaddress: String = "C0:49:EF:D1:1B:06"
+
 class DeviceControlActivity : AppCompatActivity() {
 
     private var bluetoothService : BluetoothLeService? = null
@@ -28,7 +30,7 @@ class DeviceControlActivity : AppCompatActivity() {
                     Log.e(TAG, "Unable to initialize Bluetooth")
                     finish()
                 }
-                bluetooth.connect()
+                bluetooth.connect(btaddress)
             }
         }
 

@@ -16,6 +16,7 @@ class BluetoothLeService : Service() {
     private val binder = LocalBinder()
     private var bluetoothAdapter: BluetoothAdapter? = null
     private var connectionState = STATE_DISCONNECTED
+    private var bluetoothGatt: BluetoothGatt? = null
 
     inner class LocalBinder : Binder() {
         fun getService(): BluetoothLeService {
@@ -36,6 +37,8 @@ class BluetoothLeService : Service() {
         bluetoothAdapter?.let { adapter ->
             try {
                 val device = adapter.getRemoteDevice(address)
+                bluetoothGatt = device.connectGatt(this, false, ) // todo
+                return true
             } catch (exception: java.lang.IllegalArgumentException) {
                 Log.w(TAG, "Device not found with provided address.")
                 return false
@@ -44,7 +47,6 @@ class BluetoothLeService : Service() {
             Log.w(TAG, "BluetoothAdapter not initialized")
             return false
         }
-        return true
     }
 
     private fun broadcastUpdate(action: String) {
