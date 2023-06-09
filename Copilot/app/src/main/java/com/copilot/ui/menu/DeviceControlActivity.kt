@@ -54,10 +54,17 @@ class DeviceControlActivity : AppCompatActivity() {
                     connected = false
                 }
                 BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED -> {
-//                    val gattServices = bluetoothService?.getSupportedGattServices()
-//                    gattServices?.forEach {
-//                        Log.d(TAG, "Service: ${it.uuid}")
-//                    }
+                    Log.d(TAG, "Services discovered")
+                    val gattServices = bluetoothService?.getSupportedGattServices()
+                    gattServices?.forEach { service ->
+                        Log.d(TAG, "Service: ${service.uuid}")
+                        service.characteristics.forEach { characteristic ->
+                            Log.d(TAG, "Characteristic: ${characteristic.uuid}")
+                            bluetoothService?.readCharacteristic(characteristic)
+                        }
+                    }
+                }
+                BluetoothLeService.ACTION_DATA_AVAILABLE -> {
                 }
             }
         }

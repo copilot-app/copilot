@@ -16,8 +16,6 @@ class BluetoothLeService : Service() {
     private var bluetoothAdapter: BluetoothAdapter? = null
     private var bluetoothGatt: BluetoothGatt? = null
     private var connectionState = STATE_DISCONNECTED
-    private var bluetoothDevice: BluetoothDevice? = null
-
 
     inner class LocalBinder : Binder() {
         fun getService(): BluetoothLeService {
@@ -31,6 +29,7 @@ class BluetoothLeService : Service() {
             Log.e(TAG, "Unable to obtain a BluetoothAdapter")
             return false
         }
+        Log.d(TAG, "BluetoothAdapter initialized")
         return true
     }
 
@@ -58,17 +57,24 @@ class BluetoothLeService : Service() {
 
     private fun broadcastUpdate(action: String, characteristic: BluetoothGattCharacteristic) {
         val intent = Intent(action)
+
+        Log.d(TAG, "Value: ${characteristic.value}")
+
         sendBroadcast(intent)
     }
 
     private val bluetoothGattCallback = object : BluetoothGattCallback() {
+        @SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             if (newState == STATE_CONNECTED) {
                 connectionState = STATE_CONNECTED
                 broadcastUpdate(ACTION_GATT_CONNECTED)
+                Log.d(TAG, "Connected to GATT server")
+                bluetoothGatt?.discoverServices()
             } else if (newState == STATE_DISCONNECTED) {
                 connectionState = STATE_DISCONNECTED
                 broadcastUpdate(ACTION_GATT_DISCONNECTED)
+                Log.d(TAG, "Disconnected from GATT server")
             }
         }
 
