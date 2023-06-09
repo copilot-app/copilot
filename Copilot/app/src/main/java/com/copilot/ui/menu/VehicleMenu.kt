@@ -3,11 +3,11 @@ package com.copilot.ui.menu
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothManager
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -16,11 +16,14 @@ import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat.*
 import com.copilot.data.DummyData
 
+const val TAG = "BluetoothLeService"
+
 class VehicleMenu(private val context: Context, view: View) {
 
     private val screenHeightPercentage = 0.60
 
     private var bluetoothManager: BluetoothManager? = null
+    private val bluetoothGatt: BluetoothGatt? = null
     private val bluetoothAdapter: BluetoothAdapter?
 
     init {
@@ -115,4 +118,11 @@ class VehicleMenu(private val context: Context, view: View) {
             )
         }
     }
+
+    private fun connectToGattServer() {
+
+    //        bluetoothGatt = device.connectGatt(this, false, gattCallback)
+
+    }
+
 }
