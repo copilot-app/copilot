@@ -46,15 +46,15 @@ class DeviceControlActivity : AppCompatActivity() {
     private val gattUpdateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
-                BluetoothLeService.ACTION_GATT_CONNECTED -> {
-                    connected = true
-                    updateConnectionState(R.string.connected)
-
-                }
-                BluetoothLeService.ACTION_GATT_DISCONNECTED -> {
-                    connected = false
-                    updateConnectionState(R.string.disconnected)
-                }
+//                BluetoothLeService.ACTION_GATT_CONNECTED -> {
+//                    connected = true
+//                    updateConnectionState(R.string.connected)
+//
+//                }
+//                BluetoothLeService.ACTION_GATT_DISCONNECTED -> {
+//                    connected = false
+//                    updateConnectionState(R.string.disconnected)
+//                }
             }
         }
     }

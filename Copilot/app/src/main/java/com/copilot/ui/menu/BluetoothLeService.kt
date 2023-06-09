@@ -3,6 +3,7 @@ package com.copilot.ui.menu
 import android.annotation.SuppressLint
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothProfile.STATE_CONNECTED
@@ -18,6 +19,8 @@ abstract class BluetoothLeService : Service() {
     private var bluetoothAdapter: BluetoothAdapter? = null
     private var bluetoothGatt: BluetoothGatt? = null
     private var connectionState = STATE_DISCONNECTED
+    private var bluetoothDevice: BluetoothDevice? = null
+
 
     inner class LocalBinder : Binder() {
         fun getService(): BluetoothLeService {

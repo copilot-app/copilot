@@ -118,9 +118,4 @@ class VehicleMenu(private val context: Context, view: View) {
             )
         }
     }
-
-    private fun connectToGattServer() {
-        bluetoothGatt = device.connectGatt(this, false, gattCallback)
-    }
-
 }
