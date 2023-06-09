@@ -11,7 +11,7 @@ import android.content.Intent
 import android.os.Binder
 import android.util.Log
 
-class BluetoothLeService : Service() {
+abstract class BluetoothLeService : Service() {
 
     private val binder = LocalBinder()
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -37,7 +37,7 @@ class BluetoothLeService : Service() {
         bluetoothAdapter?.let { adapter ->
             try {
                 val device = adapter.getRemoteDevice(address)
-                bluetoothGatt = device.connectGatt(this, false, ) // todo
+                bluetoothGatt = device.connectGatt(this, false, bluetoothGattCallback)
                 return true
             } catch (exception: java.lang.IllegalArgumentException) {
                 Log.w(TAG, "Device not found with provided address.")
@@ -69,5 +69,17 @@ class BluetoothLeService : Service() {
     companion object {
         const val ACTION_GATT_CONNECTED = "com.copilot.ACTION_GATT_CONNECTED"
         const val ACTION_GATT_DISCONNECTED = "com.copilot.ACTION_GATT_DISCONNECTED"
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        close()
+        return super.onUnbind(intent)
+    }
+
+    private fun close() {
+        bluetoothGatt?.let { gatt ->
+            gatt.close()
+            bluetoothGatt = null
+        }
     }
 }
