@@ -13,7 +13,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 
-abstract class BluetoothLeService : Service() {
+class BluetoothLeService : Service() {
 
     private val binder = LocalBinder()
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -76,8 +76,8 @@ abstract class BluetoothLeService : Service() {
         const val ACTION_GATT_DISCONNECTED = "com.copilot.ACTION_GATT_DISCONNECTED"
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+    override fun onBind(intent: Intent?): IBinder {
+        return binder
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

@@ -4,9 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothManager
-import android.content.*
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.util.Log
 import android.view.View
@@ -23,7 +24,6 @@ class VehicleMenu(private val context: Context, view: View) {
     private val screenHeightPercentage = 0.60
 
     private var bluetoothManager: BluetoothManager? = null
-    private val bluetoothGatt: BluetoothGatt? = null
     private val bluetoothAdapter: BluetoothAdapter?
 
     init {
@@ -34,6 +34,10 @@ class VehicleMenu(private val context: Context, view: View) {
             Log.d("Bluetooth", "Bluetooth is not supported on this device")
         else if (!bluetoothAdapter.isEnabled)
             startActivity(context, Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), null)
+
+        val intent = Intent(context, DeviceControlActivity::class.java)
+        startActivity(context, intent, null)
+
         showConnectedDevicesAlert(view)
     }
 
