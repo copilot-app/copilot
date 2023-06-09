@@ -1,5 +1,6 @@
 package com.copilot.ui.menu
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -7,7 +8,6 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothManager
 import android.content.*
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.os.IBinder
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -66,6 +66,7 @@ class VehicleMenu(private val context: Context, view: View) {
         setAlertHeight(builder.create())
     }
 
+    @SuppressLint("MissingPermission")
     private fun showNewDeviceAlert(view: View) {
         var deviceNames = arrayOf("")
         if (checkSelfPermission(
@@ -76,8 +77,7 @@ class VehicleMenu(private val context: Context, view: View) {
             val pairedDevices = bluetoothAdapter?.bondedDevices
             deviceNames = pairedDevices?.map { device: BluetoothDevice -> device.name }
                 ?.toTypedArray() ?: arrayOf()
-        }
-        else {
+        } else {
             requestPermissions(
                 context as Activity,
                 arrayOf(android.Manifest.permission.BLUETOOTH),
@@ -120,9 +120,7 @@ class VehicleMenu(private val context: Context, view: View) {
     }
 
     private fun connectToGattServer() {
-
-    //        bluetoothGatt = device.connectGatt(this, false, gattCallback)
-
+        bluetoothGatt = device.connectGatt(this, false, gattCallback)
     }
 
 }
