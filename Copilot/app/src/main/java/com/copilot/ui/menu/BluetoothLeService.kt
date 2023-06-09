@@ -12,7 +12,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 
-class BluetoothLeService : Service() {
+abstract class BluetoothLeService : Service() {
 
     private val binder = LocalBinder()
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -75,5 +75,18 @@ class BluetoothLeService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         TODO("Not yet implemented")
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        close()
+        return super.onUnbind(intent)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun close() {
+        bluetoothGatt?.let { gatt ->
+            gatt.close()
+            bluetoothGatt = null
+        }
     }
 }
