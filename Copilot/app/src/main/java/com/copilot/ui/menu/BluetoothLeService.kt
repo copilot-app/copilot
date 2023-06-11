@@ -60,6 +60,7 @@ class BluetoothLeService : Service() {
 
     private fun broadcastUpdate(action: String, characteristic: BluetoothGattCharacteristic) {
         val intent = Intent(action)
+        intent.putExtra(EXTRA_DATA, String(characteristic.value))
         sendBroadcast(intent)
     }
 
@@ -82,10 +83,6 @@ class BluetoothLeService : Service() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 gatt?.printGattTable()
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED)
-                val copilotUuid = UUID.fromString(resources.getString(R.string.copilot_uuid))
-                gatt?.getService(copilotUuid)?.getCharacteristic(copilotUuid)?.let {
-                    readCharacteristic(it)
-                }
             } else {
                 Log.w(TAG, "onServicesDiscovered received: $status")
             }
@@ -103,7 +100,6 @@ class BluetoothLeService : Service() {
                     value.joinToString(separator = " ", prefix = "0x") { String.format("%02X", it) }
                 Log.d(TAG, "onCharacteristicRead: $hexString")
                 Log.d(TAG, "onCharacteristicRead: ${String(value)}")
-
             }
         }
 
@@ -117,11 +113,19 @@ class BluetoothLeService : Service() {
         }
     }
 
+    fun readLocation() {
+        val copilotUuid = UUID.fromString(resources.getString(R.string.copilot_uuid))
+        bluetoothGatt?.getService(copilotUuid)?.getCharacteristic(copilotUuid)?.let {
+            readCharacteristic(it)
+        }
+    }
+
     companion object {
         const val ACTION_GATT_CONNECTED = "com.copilot.ACTION_GATT_CONNECTED"
         const val ACTION_GATT_DISCONNECTED = "com.copilot.ACTION_GATT_DISCONNECTED"
         const val ACTION_GATT_SERVICES_DISCOVERED = "com.copilot.ACTION_GATT_SERVICES_DISCOVERED"
         const val ACTION_DATA_AVAILABLE = "com.copilot.ACTION_DATA_AVAILABLE"
+        const val EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA"
     }
 
     override fun onBind(intent: Intent?): IBinder {

@@ -27,8 +27,7 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dashboardViewModel =
-            ViewModelProvider(this)[DashboardViewModel::class.java]
+        dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root

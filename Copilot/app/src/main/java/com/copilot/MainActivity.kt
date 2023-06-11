@@ -6,8 +6,8 @@ import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.copilot.databinding.ActivityMainBinding
@@ -19,6 +19,7 @@ import com.google.android.gms.maps.MapsInitializer.Renderer
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity(), OnMapsSdkInitializedCallback {
 
@@ -89,8 +90,13 @@ class MainActivity : AppCompatActivity(), OnMapsSdkInitializedCallback {
                 BluetoothLeService.ACTION_GATT_DISCONNECTED -> {
                 }
                 BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED -> {
+                    timer(period = 2000) {
+                        bluetoothService?.readLocation()
+                    }
                 }
                 BluetoothLeService.ACTION_DATA_AVAILABLE -> {
+                    val data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA)
+                    Toast.makeText(context, data, Toast.LENGTH_SHORT).show()
                 }
             }
         }
