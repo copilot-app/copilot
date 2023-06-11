@@ -1,6 +1,7 @@
 package com.copilot.ui.menu
 
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothGattCharacteristic
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
@@ -54,15 +55,6 @@ class DeviceControlActivity : AppCompatActivity() {
                     connected = false
                 }
                 BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED -> {
-                    Log.d(TAG, "Services discovered")
-                    val gattServices = bluetoothService?.getSupportedGattServices()
-                    gattServices?.forEach { service ->
-                        Log.d(TAG, "Service: ${service.uuid}")
-                        service.characteristics.forEach { characteristic ->
-                            Log.d(TAG, "Characteristic: ${characteristic.uuid}")
-                            bluetoothService?.readCharacteristic(characteristic)
-                        }
-                    }
                 }
                 BluetoothLeService.ACTION_DATA_AVAILABLE -> {
                 }
