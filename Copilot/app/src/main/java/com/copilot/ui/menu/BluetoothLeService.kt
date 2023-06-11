@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import com.copilot.R
 import com.copilot.data.access.saveUserData
 import java.util.*
 
@@ -81,7 +82,7 @@ class BluetoothLeService : Service() {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 gatt?.printGattTable()
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED)
-                val copilotUuid = UUID.fromString("000000ff-0000-1000-8000-00805f9b34fb")
+                val copilotUuid = UUID.fromString(resources.getString(R.string.copilot_uuid))
                 gatt?.getService(copilotUuid)?.getCharacteristic(copilotUuid)?.let {
                     readCharacteristic(it)
                 }
@@ -102,6 +103,7 @@ class BluetoothLeService : Service() {
                     value.joinToString(separator = " ", prefix = "0x") { String.format("%02X", it) }
                 Log.d(TAG, "onCharacteristicRead: $hexString")
                 Log.d(TAG, "onCharacteristicRead: ${String(value)}")
+
             }
         }
 

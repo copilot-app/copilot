@@ -35,9 +35,6 @@ class VehicleMenu(private val context: Context, view: View) {
         else if (!bluetoothAdapter.isEnabled)
             startActivity(context, Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), null)
 
-        val intent = Intent(context, DeviceControlActivity::class.java)
-        startActivity(context, intent, null)
-
         showConnectedDevicesAlert(view)
     }
 

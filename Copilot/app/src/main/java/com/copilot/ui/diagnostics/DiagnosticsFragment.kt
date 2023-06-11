@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.copilot.R
 import com.copilot.databinding.FragmentDiagnosticsBinding
 
-
-
 class DiagnosticsFragment : Fragment() {
     private lateinit var diagnosticsViewModel: DiagnosticsViewModel
     private lateinit var errorMessageAdapter: ErrorMessageAdapter
@@ -59,8 +57,10 @@ class DiagnosticsFragment : Fragment() {
 
         binding.btnExpandErrors.setOnClickListener {
             if (!isErrorsExpanded) {
-                binding.recycleViewerOfErrors.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 4)
-                binding.recycleViewerOfInfo.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
+                binding.recycleViewerOfErrors.layoutParams =
+                    LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 4)
+                binding.recycleViewerOfInfo.layoutParams =
+                    LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
 
                 binding.btnExpandErrors.setIconResource(R.drawable.ic_arrow_up_24)
 
@@ -70,7 +70,8 @@ class DiagnosticsFragment : Fragment() {
                 }
                 isErrorsExpanded = true
             } else {
-                binding.recycleViewerOfErrors.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
+                binding.recycleViewerOfErrors.layoutParams =
+                    LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
                 binding.btnExpandErrors.setIconResource(R.drawable.ic_arrow_down_24)
 
                 isErrorsExpanded = false
@@ -79,8 +80,10 @@ class DiagnosticsFragment : Fragment() {
 
         binding.btnExpandGeneralInformation.setOnClickListener {
             if (!isInformationExpanded) {
-                binding.recycleViewerOfInfo.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 4)
-                binding.recycleViewerOfErrors.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
+                binding.recycleViewerOfInfo.layoutParams =
+                    LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView * 4)
+                binding.recycleViewerOfErrors.layoutParams =
+                    LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
 
                 binding.btnExpandGeneralInformation.setIconResource(R.drawable.ic_arrow_up_24)
 
@@ -91,7 +94,8 @@ class DiagnosticsFragment : Fragment() {
 
                 isInformationExpanded = true
             } else {
-                binding.recycleViewerOfInfo.layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
+                binding.recycleViewerOfInfo.layoutParams =
+                    LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, heightOfCardView)
                 binding.btnExpandGeneralInformation.setIconResource(R.drawable.ic_arrow_down_24)
 
                 isInformationExpanded = false
