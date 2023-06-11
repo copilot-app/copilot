@@ -6,20 +6,22 @@ import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.copilot.databinding.ActivityMainBinding
+import com.copilot.ui.dashboard.DashboardFragment
 import com.copilot.ui.menu.BluetoothLeService
 import com.copilot.ui.menu.TAG
 import com.copilot.ui.menu.VehicleMenu
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.MapsInitializer.Renderer
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlin.concurrent.timer
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), OnMapsSdkInitializedCallback {
 
@@ -95,8 +97,18 @@ class MainActivity : AppCompatActivity(), OnMapsSdkInitializedCallback {
                     }
                 }
                 BluetoothLeService.ACTION_DATA_AVAILABLE -> {
-                    val data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA)
-                    Toast.makeText(context, data, Toast.LENGTH_SHORT).show()
+                    val locationString = intent.getStringExtra(BluetoothLeService.EXTRA_DATA)
+                    location = LatLng(
+                        locationString!!.split(",")[0].toDouble(),
+                        locationString.split(",")[1].toDouble()
+                    )
+                    val navHostFragment =
+                        supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+                    val currentFragment =
+                        navHostFragment?.childFragmentManager?.fragments?.get(0)
+                    if (currentFragment is DashboardFragment) {
+                        currentFragment.updateLocation()
+                    }
                 }
             }
         }
@@ -123,5 +135,9 @@ class MainActivity : AppCompatActivity(), OnMapsSdkInitializedCallback {
             addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED)
             addAction(BluetoothLeService.ACTION_DATA_AVAILABLE)
         }
+    }
+
+    companion object {
+        var location: LatLng? = null
     }
 }

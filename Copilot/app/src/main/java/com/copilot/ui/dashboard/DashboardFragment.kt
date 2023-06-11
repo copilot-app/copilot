@@ -1,11 +1,14 @@
 package com.copilot.ui.dashboard
 
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.copilot.MainActivity
 import com.copilot.R
 import com.copilot.databinding.FragmentDashboardBinding
 import com.github.anastr.speedviewlib.PointerSpeedometer
@@ -14,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlin.concurrent.timer
 
 class DashboardFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
@@ -32,6 +36,11 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val location = binding.textLocation
+        dashboardViewModel.location.observe(viewLifecycleOwner) {
+            location.text = getString(R.string.location, it.latitude, it.longitude)
+        }
+
         val speed: PointerSpeedometer = binding.pointerSpeedometer
         dashboardViewModel.speed.observe(viewLifecycleOwner) {
             speed.speedTo(it.toFloat())
@@ -42,7 +51,8 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
             fuel.speedTo(it.toFloat())
         }
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
         return root
@@ -56,8 +66,13 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         dashboardViewModel.location.observe(viewLifecycleOwner) {
+            map.clear()
             map.addMarker(MarkerOptions().position(it))
             map.moveCamera(CameraUpdateFactory.newLatLng(it))
         }
+    }
+
+    fun updateLocation() {
+        dashboardViewModel.updateLocation()
     }
 }

@@ -176,7 +176,6 @@ class BluetoothLeService : Service() {
         }
     }
 
-
     fun BluetoothGattCharacteristic.isReadable(): Boolean =
         containsProperty(BluetoothGattCharacteristic.PROPERTY_READ)
 
